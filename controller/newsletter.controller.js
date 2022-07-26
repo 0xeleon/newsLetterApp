@@ -1,4 +1,5 @@
 import NewsLetterModel from '../db/models/newsletter.model.js'
+import CategoryModel from '../db/models/category.model.js'
 import { sendEmail } from '../utils/mail.js'
 
 const getNewsLetters = async (_req, res, next) => {   
@@ -9,6 +10,40 @@ const getNewsLetters = async (_req, res, next) => {
         console.error(err)
         return res.status(500).send({'error' : 'A error happend contact admin'})
     }
+}
+
+const getAnalytics = async (_req, res, next) => {
+    try{
+        let newsletters = await NewsLetterModel.find().populate('category')
+        let result = {}
+        newsletters.forEach(item => {
+            if(item.category){
+                if(result.hasOwnProperty(item.category.name)){
+                    result[item.category.name].total = result[item.category.name].total + 1
+                    result[item.category.name].mails = result[item.category.name].mails + item.emailsSend.length
+                }else{
+                    result[item.category.name] = {
+                        total : 1,
+                        mails : item.emailsSend.length
+                    }
+                }
+            }
+        })
+        let listData = []
+        for (const key in result) {
+            const element = result[key];
+            listData.push({
+                'name' : key,
+                'totalPost' : element.total,
+                'totalEmails' : element.mails
+            })
+        }
+        return res.status(200).send(listData)
+    }catch(err){
+        console.error(err)
+        return res.status(500).send({'error' : 'A error happend contact admin'})
+    }
+
 }
 
 const createNewsLetters = async (_req, res, next) => {
@@ -22,8 +57,6 @@ const createNewsLetters = async (_req, res, next) => {
             let newMail = await sendEmail(body.subject, item, bodyUnsubscribed, file.filename, file.path, file.mimetype)
         })
         
-
-
         body.emailsSend = body.emailsSend.map(item => item._id)
         body.file = file.path
         body.active = true
@@ -75,5 +108,6 @@ export {
     getNewsLetters,
     createNewsLetters,
     updateNewsLetters,
-    deleteNewsLetters
+    deleteNewsLetters,
+    getAnalytics,
 }
