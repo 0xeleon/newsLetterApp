@@ -10,7 +10,8 @@ const NewsLetterModel = new mongoose.model('NewsLetter', new mongoose.Schema({
     minlength1: 1
   },
   category : {
-    type : { type: mongoose.Schema.Types.ObjectId, ref: 'Category' }
+    type : mongoose.Schema.Types.ObjectId, 
+    ref: 'Category',
   },
   content  : {
     type: String,
