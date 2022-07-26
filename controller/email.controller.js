@@ -4,7 +4,7 @@ import { hashEmail } from '../utils/hash.js'
 
 const getEmails = async (_req, res, next) => {   
     try{
-        let emails = await EmailModel.find().populate('categories')
+        let emails = await EmailModel.find({active : true}).populate('categories')
         return res.status(200).send(emails)
     }catch(err){
         console.error(err)
@@ -15,7 +15,7 @@ const getEmails = async (_req, res, next) => {
 const getSingleEmail = async (_req, res, next) => {
     try{         
         let email = await EmailModel.findOne({email : _req.query.email}).lean().then(res => res)
-        let categories = await CategoryModel.find().lean().then(res => res)
+        let categories = await CategoryModel.find({active : true}).lean().then(res => res)
         let subscribed = categories.map(category => {
             let search = email.categories.find(item => item.toString() === category._id.toString())
             let categoryAccess = {...category}

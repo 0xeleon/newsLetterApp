@@ -3,7 +3,7 @@ import EmailModel from '../db/models/email.model.js'
 
 const getCategories = async (_req, res, next) => {   
     try{
-        let categories = await CategoryModel.find()
+        let categories = await CategoryModel.find({active : true})
         return res.status(200).send(categories)
     }catch(err){
         console.error(err)
@@ -13,8 +13,8 @@ const getCategories = async (_req, res, next) => {
 
 const getEmailsByCategory = async(_req, res, next) => {
     try{
-        let categories = await CategoryModel.find()
-        let emails = await EmailModel.find()
+        let categories = await CategoryModel.find({active : true})
+        let emails = await EmailModel.find({active : true})
         let categoryEmail = {}
         emails.forEach(email => {
             email.categories.forEach(categoryUser => {

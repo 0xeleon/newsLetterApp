@@ -4,7 +4,7 @@ import { sendEmail } from '../utils/mail.js'
 
 const getNewsLetters = async (_req, res, next) => {   
     try{
-        let newsletters = await NewsLetterModel.find().populate('category').populate('emailsSend')
+        let newsletters = await NewsLetterModel.find({active : true}).populate('category').populate('emailsSend')
         return res.status(200).send(newsletters)
     }catch(err){
         console.error(err)
@@ -14,7 +14,7 @@ const getNewsLetters = async (_req, res, next) => {
 
 const getAnalytics = async (_req, res, next) => {
     try{
-        let newsletters = await NewsLetterModel.find().populate('category')
+        let newsletters = await NewsLetterModel.find({active : true}).populate('category')
         let result = {}
         newsletters.forEach(item => {
             if(item.category){

@@ -25,16 +25,12 @@ const Dashboard = (props) => {
         setData(data)
     }
 
-    const handleSubmit = async (event, data) =>{        
-        
-    }
-
     return (
         <Container>
         <Layout />
         <Row>
             <Col>
-                <p> Dashboard total newsletters </p>
+                <p> Dashboard otal sent emails by category </p>
                 <LineChart width={600} height={300} data={data}>
                     <Line type="monotone" dataKey="totalEmails" stroke="#8884d8" />
                     <CartesianGrid stroke="#ccc" />

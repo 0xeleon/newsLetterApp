@@ -17,7 +17,6 @@ const Layout = () => {
               <Nav.Link href="/category">Category</Nav.Link>
               <Nav.Link href="/emails">Emails</Nav.Link>
               <Nav.Link href="/editor">Send NewsLetter </Nav.Link>
-              <Nav.Link href="/unsubscribed">unsubscribed </Nav.Link>
             </Nav>
           </Navbar.Collapse>
       </Container>
